@@ -2,9 +2,9 @@
 import { useState } from "react";
 import Dropdown from "./Dropdown";
 import RequestParameters from "./RequestParameters";
-import KeyValue from "./KeyValue";
 import axios from "axios";
 import qs from "qs";
+
 const api_methods = [
   { id: 1, name: "get" },
   { id: 2, name: "post" },
@@ -16,15 +16,19 @@ const content_types = [
   { id: 1, name: "application/json" },
   { id: 2, name: "application/x-www-form-urlencoded" },
 ];
-const auth_options = [
-  { id: 1, name: "none" },
-  { id: 2, name: "basic auth" },
-];
+
+function generateKeyValuePairs(arr) {
+  const obj = {};
+  arr.forEach((item) => {
+    if (item.key && item.value) obj[item.key] = item.value;
+  });
+  return obj;
+}
 
 function Request({ setResponse }) {
   //Request states
   const [method, setMethod] = useState(api_methods[0].name);
-  const [url, setUrl] = useState("https://httpbin.org/");
+  const [url, setUrl] = useState("https://httpbin.org/get");
   const [queryParams, setQueryParams] = useState([]);
   const [postBody, setPostBody] = useState([]);
   const [putBody, setPutBody] = useState([]);
@@ -32,25 +36,11 @@ function Request({ setResponse }) {
   const [deleteBody, setDeleteBody] = useState([]);
   const [contentType, setContentType] = useState(content_types[0].name);
   const [headers, setHeaders] = useState([]);
-  const [authStrat, setAuthStrat] = useState(auth_options[0].name);
-  const [basicAuthValue, setBasicAuthValue] = useState({
-    user: "",
-    password: "",
-  });
-
   //UI states
   const [parameterToggle, setParameterToggle] = useState("parameters");
 
   function handleUrlChange(e) {
     setUrl(e.target.value);
-  }
-
-  function generateKeyValuePairs(arr) {
-    const obj = {};
-    arr.forEach((item) => {
-      if (item.key && item.value) obj[item.key] = item.value;
-    });
-    return obj;
   }
 
   async function sendRequest() {
@@ -59,13 +49,6 @@ function Request({ setResponse }) {
     request_config["method"] = method;
     request_config["params"] = generateKeyValuePairs(queryParams);
     request_config["headers"] = generateKeyValuePairs(headers);
-    /*  if (authStrat === "basic auth") {
-      request_config["auth"] = {
-        username: basicAuthValue["user"],
-        password: basicAuthValue["password"],
-      };
-      
-    } */
     if (method !== "get") {
       switch (method) {
         case "post":
@@ -92,24 +75,24 @@ function Request({ setResponse }) {
           "application/x-www-form-urlencoded;charset=utf-8";
       }
     }
-
     try {
-      const res = await axios(request_config);
+      let res = await axios(request_config);
+      if(res["headers"]["content-type"].substr(0,2)==="im"){
+        request_config["responseType"]='arraybuffer';
+        res = await axios(request_config);
+      }
+     
       setResponse(res);
     } catch (e) {
       alert("oops, some error occured :( ");
     }
   }
 
-  function handleAuthValueChange(id, key, value) {
-    setBasicAuthValue({ user: key, password: value });
-  }
-
   return (
     <div className=" mx-auto w-full md:w-1/2 md:m-0 space-y-4 bg-gray-800 rounded-lg px-4 py-2 ">
       <div className="flex flex-col  lg:flex-row md:w-full">
         <div className=" w-full lg:w-1/5">
-          <h2 className="pb-2 pt-4  font-medium">method</h2>
+          <h2 className="pb-2 pt-4  font-semibold">method</h2>
           <Dropdown
             selectedOption={method}
             setSelectedOption={setMethod}
@@ -118,7 +101,7 @@ function Request({ setResponse }) {
           />
         </div>
         <div className="w-full lg:w-4/5">
-          <h2 className="pb-2 pt-4  font-medium">URL</h2>
+          <h2 className="pb-2 pt-4  font-semibold">URL</h2>
           <div className="flex flex-col lg:flex-row ">
             <input
               type="text"
@@ -177,62 +160,50 @@ function Request({ setResponse }) {
             name="request body"
           />
         )}
-        <div className="flex space-x-2 py-4 ">
-          <button
-            className={`px-4 py-2 focus:outline-none bg-gray-700  ${
-              parameterToggle === "parameters" ? " bg-gray-700" : "bg-gray-800"
-            }`}
-            onClick={() => setParameterToggle("parameters")}
-          >
-            parameters
-          </button>
-          <button
-            className={` px-4  py-2 focus:outline-none  ${
-              parameterToggle === "headers" ? " bg-gray-700" : "bg-gray-800"
-            }`}
-            onClick={() => setParameterToggle("headers")}
-          >
-            headers
-          </button>
-        </div>
-        {parameterToggle === "parameters" && (
-          <div>
-            <RequestParameters
-              params={queryParams}
-              setParams={setQueryParams}
-              name="query parameter list"
-              type="parameter"
-            />
-          </div>
-        )}
-        {parameterToggle === "headers" && (
-          <div>
-            <RequestParameters
-              params={headers}
-              setParams={setHeaders}
-              name="header list"
-              type="header"
-            />
-          </div>
-        )}
-      </div>
 
-      {/*   <div>
-        <h2 className="font-semibold mt-4  mb-2">authentication</h2>
-        <Dropdown
-          selectedOption={authStrat}
-          setSelectedOption={setAuthStrat}
-          options={auth_options}
-          width="w-72"
-        />
-        {authStrat === "basic auth" && (
-          <KeyValue
-            keyParam={basicAuthValue["user"]}
-            valueParam={basicAuthValue["password"]}
-            onKeyValueChange={handleAuthValueChange}
-          />
-        )}
-      </div> */}
+        <div className=" mt-8 border-t border-gray-500">
+          <div className="flex space-x-2 py-4 ">
+            <button
+              className={`px-4 py-2 font-semibold focus:outline-none   ${
+                parameterToggle === "parameters"
+                  ? " bg-gray-700"
+                  : "bg-gray-800"
+              }`}
+              onClick={() => setParameterToggle("parameters")}
+            >
+              parameters
+            </button>
+            <button
+              className={` px-4  py-2 focus:outline-none font-semibold ${
+                parameterToggle === "headers" ? " bg-gray-700" : "bg-gray-800"
+              }`}
+              onClick={() => setParameterToggle("headers")}
+            >
+              headers
+            </button>
+          </div>
+          {parameterToggle === "parameters" && (
+            <div>
+              <RequestParameters
+                params={queryParams}
+                setParams={setQueryParams}
+                name="query parameter list"
+                type="parameter"
+              />
+            </div>
+          )}
+          {parameterToggle === "headers" && (
+            <div>
+              <RequestParameters
+                params={headers}
+                setParams={setHeaders}
+                name="header list"
+                type="header"
+              />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
