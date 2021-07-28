@@ -1,7 +1,8 @@
 import { nanoid } from "nanoid";
 import KeyValue from "./KeyValue";
+import {PlusIcon} from '@heroicons/react/solid'
 
-function RequestParameters({ params, setParams, name }) {
+function RequestParameters({ params, setParams, name , type }) {
   function addParam() {
     const new_params = [...params];
     const id = nanoid();
@@ -22,9 +23,11 @@ function RequestParameters({ params, setParams, name }) {
     setParams(new_params);
   }
 
+  
   return (
-    <div>
-      <h2 className="font-semibold mt-4  mb-2">{name}</h2>
+    <div className="w-full">
+      {/* <h2 className=" pt-4 pb-2">{name}</h2> */}
+      <div className=" flex flex-col items-center">
       {params.map((param) => (
         <KeyValue
           key={param.id}
@@ -35,11 +38,14 @@ function RequestParameters({ params, setParams, name }) {
           onKeyValueChange={onKeyValueChange}
         />
       ))}
-      <button className="border w-48 py-2 px-4 my-2" onClick={addParam}>
-        add new
+      </div>
+      <button className="font-semibold bg-gray-700  py-2 px-4 my-2 flex items-center justify-center space-x-1 mx-auto" onClick={addParam}>
+         <PlusIcon className="w-6 h-5"/>
       </button>
     </div>
   );
 }
+
+
 
 export default RequestParameters;

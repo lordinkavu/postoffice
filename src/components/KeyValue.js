@@ -1,3 +1,4 @@
+import {TrashIcon} from '@heroicons/react/solid'
 function KeyValue({ id, removeParam, keyParam, valueParam, onKeyValueChange }) {
   function handleDelete() {
     removeParam(id);
@@ -10,23 +11,24 @@ function KeyValue({ id, removeParam, keyParam, valueParam, onKeyValueChange }) {
     onKeyValueChange(id, keyParam, e.target.value);
   }
   return (
-    <div className="flex ">
+    <div className="flex w-full font-mono text-sm ">
       <input
         type="text"
         placeholder="key"
-        className="border w-32 py-2 px-4"
+        className=" border-opacity-5 w-1/2 py-2 px-4 mb-1 mr-1 bg-gray-900"
         onChange={handleKeyChange}
         value={keyParam}
+      
       />
       <input
         type="text"
         placeholder="value"
-        className="border w-32 py-2 px-4"
+        className=" border-opacity-5 w-1/2 mb-1 mr-1 py-2 px-4 bg-gray-900"
         onChange={handleValueChange}
         value={valueParam}
       />
-      <button className="border w-24 py-2 px-4" onClick={handleDelete}>
-        delete
+      <button className=" w-16 py-2 mb-1  px-4 flex border border-gray-500 justify-center items-center" onClick={handleDelete}>
+        <TrashIcon className="w-6 h-5"/>
       </button>
     </div>
   );

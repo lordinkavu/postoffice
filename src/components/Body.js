@@ -6,9 +6,9 @@ import Request from "./Request";
 function Body(props) {
   const [response, setResponse] = useState();
   return (
-    <section>
+    <section className="text-gray-300 min-h-screen">
       <Request setResponse={setResponse} />
-      <Response response={response} />
+      {/* <Response response={response} /> */}
     </section>
   );
 }
