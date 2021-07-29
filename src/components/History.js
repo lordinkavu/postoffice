@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import HistoryCard from "./HistoryCard";
 
-function History({ response }) {
+function History({ response, setRequest, setResponse }) {
   const [history, setHistory] = useState();
-  
+  const {setMethod, setUrl, setQueryParams,setBody,setContentType,setHeaders} = setRequest;
   useEffect(() => {
     setHistory(localStorage.getItem("history"));
     console.log("changing");
@@ -15,6 +16,17 @@ function History({ response }) {
     );
     localStorage.setItem("history", JSON.stringify(newHistoryArr));
     setHistory(localStorage.getItem("history"));
+  }
+
+  function updateStates({request,response}){
+    
+    setMethod(request.method);
+    setUrl(request.url);
+    setQueryParams(request.queryParams);
+    setBody(request.body);
+    setContentType(request.contentType);
+    setHeaders(request.headers);
+    setResponse(response);
   }
 
   if (!history) {
@@ -36,9 +48,10 @@ function History({ response }) {
       <ul className="space-y-4 text-sm">
         {historyArr.map((item) => (
           <HistoryCard
-            history={item}
+            historyObj={item}
             key={item["request time"]}
             removeElement={removeElement}
+            updateStates={updateStates}
           />
         ))}
       </ul>

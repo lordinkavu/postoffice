@@ -6,51 +6,29 @@ import ButtonTab from "./ButtonTab";
 import axios from "axios";
 import generateAxiosConfig from "../helpers/request_config";
 
-const api_methods = [
-  { id: 1, name: "get" },
-  { id: 2, name: "post" },
-  { id: 3, name: "put" },
-  { id: 4, name: "patch" },
-  { id: 5, name: "delete" },
-];
-const content_types = [
-  { id: 1, name: "application/json" },
-  { id: 2, name: "application/x-www-form-urlencoded" },
-];
-
 function writeHistory(req, res) {
-  const request_state = {
-    url: req.url,
-    method: req.method,
-    queryParams: req.queryParams,
-    body: req.body,
-    contentType: req.contentType,
-    headers: req.headers,
-  };
-  const response_state = {status:res.status, data:res.data, meta:res.statusText,headers:res.headers};
   const state = {
-    request: request_state,
-    response: response_state,
+    request: req,
+    response: res,
     "request time": new Date().getTime().toString(),
   };
-  let history_array = [];
+  let historyArr = [];
   if (localStorage.getItem("history")) {
-    history_array = JSON.parse(localStorage.getItem("history"));
+    historyArr = JSON.parse(localStorage.getItem("history"));
   }
-  history_array.unshift(state);
-  localStorage.setItem("history", JSON.stringify(history_array));
+  historyArr.unshift(state);
+  localStorage.setItem("history", JSON.stringify(historyArr));
 }
 
-function Request({ setResponse }) {
-  //Request states
-  const [method, setMethod] = useState(api_methods[0].name);
-  const [url, setUrl] = useState("https://httpbin.org/get");
-  const [queryParams, setQueryParams] = useState([]);
-  const [body, setBody] = useState([]);
-  const [contentType, setContentType] = useState(content_types[0].name);
-  const [headers, setHeaders] = useState([]);
+function Request({ setResponse , request, setRequest, dropdownLists }) {
+  //Request props
+  const {method,url,queryParams,body,contentType,headers} = request;
+  const {setMethod, setUrl, setQueryParams,setBody,setContentType,setHeaders} = setRequest;
+
   //UI states
   const [parameterToggle, setParameterToggle] = useState("parameters");
+
+  const {api_methods, content_types} = dropdownLists;
 
   function handleUrlChange(e) {
     setUrl(e.target.value);
@@ -58,25 +36,20 @@ function Request({ setResponse }) {
 
   async function sendRequest() {
     setResponse(null);
-    const req = {
-      url: url,
-      method: method,
-      queryParams: queryParams,
-      body: body,
-      contentType: contentType,
-      headers: headers,
-    };
-    const request_config = generateAxiosConfig(req);
+    const requestConfig = generateAxiosConfig(request);
     try {
-      let res = await axios(request_config);
-      if (res["headers"]["content-type"].substr(0, 2) === "im") {
-        request_config["responseType"] = "arraybuffer";
-        res = await axios(request_config);
+      let axiosRes = await axios(requestConfig);
+      if (axiosRes["headers"]["content-type"].substr(0, 2) === "im") {
+        requestConfig["responseType"] = "arraybuffer";
+        axiosRes = await axios(requestConfig);
       }
-      writeHistory(req, res);
+      
+      const res = {data:axiosRes.data, headers:axiosRes.headers, status: axiosRes.status,statusText: axiosRes.statusText};
+      console.log(res);
+      writeHistory(request, res);
       setResponse(res);
     } catch (e) {
-      writeHistory(req, e.response);
+      writeHistory(request, e.response);
       setResponse(e.response);
     }
   }

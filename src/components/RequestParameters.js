@@ -2,7 +2,7 @@ import { nanoid } from "nanoid";
 import KeyValue from "./KeyValue";
 import {PlusIcon} from '@heroicons/react/solid'
 
-function RequestParameters({ params, setParams, name , type }) {
+function RequestParameters({ params, setParams }) {
   function addParam() {
     const new_params = [...params];
     const id = nanoid();
