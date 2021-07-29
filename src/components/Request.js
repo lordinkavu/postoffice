@@ -18,6 +18,29 @@ const content_types = [
   { id: 2, name: "application/x-www-form-urlencoded" },
 ];
 
+function writeHistory(req, res) {
+  const request_state = {
+    url: req.url,
+    method: req.method,
+    queryParams: req.queryParams,
+    body: req.body,
+    contentType: req.contentType,
+    headers: req.headers,
+  };
+  const response_state = {status:res.status, data:res.data, meta:res.statusText,headers:res.headers};
+  const state = {
+    request: request_state,
+    response: response_state,
+    "request time": new Date().getTime().toString(),
+  };
+  let history_array = [];
+  if (localStorage.getItem("history")) {
+    history_array = JSON.parse(localStorage.getItem("history"));
+  }
+  history_array.unshift(state);
+  localStorage.setItem("history", JSON.stringify(history_array));
+}
+
 function Request({ setResponse }) {
   //Request states
   const [method, setMethod] = useState(api_methods[0].name);
@@ -34,22 +57,32 @@ function Request({ setResponse }) {
   }
 
   async function sendRequest() {
-    setResponse(null)
-    const request_config = generateAxiosConfig(url,method,queryParams,headers, contentType, body);
+    setResponse(null);
+    const req = {
+      url: url,
+      method: method,
+      queryParams: queryParams,
+      body: body,
+      contentType: contentType,
+      headers: headers,
+    };
+    const request_config = generateAxiosConfig(req);
     try {
       let res = await axios(request_config);
       if (res["headers"]["content-type"].substr(0, 2) === "im") {
         request_config["responseType"] = "arraybuffer";
         res = await axios(request_config);
       }
+      writeHistory(req, res);
       setResponse(res);
     } catch (e) {
+      writeHistory(req, e.response);
       setResponse(e.response);
     }
   }
 
   return (
-    <div className=" mx-auto w-full md:w-1/2 md:m-0 space-y-4 bg-gray-800 rounded-lg px-4 py-2 ">
+    <div className=" mx-auto w-full  md:m-0 space-y-4 bg-gray-800 rounded-lg px-4 py-2 ">
       <div className="flex flex-col  lg:flex-row md:w-full">
         <div className=" w-full lg:w-1/5">
           <Dropdown

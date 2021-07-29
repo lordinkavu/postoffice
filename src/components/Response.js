@@ -6,7 +6,7 @@ function Response({ response }) {
   const [responseToggle, setResponseToggle] = useState("data");
   if (!response) {
     return (
-      <div className="mx-auto w-full md:w-1/2 md:m-0  bg-gray-800 rounded-lg px-4 py-2 ">
+      <div className="mx-auto w-full  md:m-0  bg-gray-800 rounded-lg px-4 py-2 ">
         <div className="flex flex-col ">
           <h2 className=" pb-4 pt-4 font-bold">response</h2>
           <div className="pb-2   font-semibold ">
@@ -42,7 +42,7 @@ function Response({ response }) {
       }
     }
     return (
-      <div className="mx-auto w-full md:w-1/2 md:m-0  bg-gray-800 rounded-lg px-4 py-2 ">
+      <div className="mx-auto w-full  md:m-0  bg-gray-800 rounded-lg px-4 py-2 ">
         <div className="flex flex-col">
           <h2 className=" pb-4 pt-4 font-bold">response</h2>
           <div className=" pb-2  font-semibold ">
@@ -69,7 +69,7 @@ function Response({ response }) {
         </div>
         {responseToggle === "data" && (
           <div className="focus:outline-none">
-            <pre className="overflow-auto bg-gray-900 h-96 p-4 rounded-md">
+            <pre className="overflow-auto bg-gray-900 min-h-72 max-h-screen p-4 rounded-md">
               <code>{display_data}</code>
             </pre>
           </div>
