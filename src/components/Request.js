@@ -1,34 +1,27 @@
-/* eslint-disable no-unused-vars */
-import { useState, Fragment } from "react";
+import { useState } from "react";
+import { Transition } from "@headlessui/react";
+import axios from "axios";
 import Dropdown from "./Dropdown";
 import RequestParameters from "./RequestParameters";
 import ButtonTab from "./ButtonTab";
-import axios from "axios";
 import generateAxiosConfig from "../helpers/request_config";
+import persistHistory from "../helpers/persist_history";
 
-function writeHistory(req, res) {
-  const state = {
-    request: req,
-    response: res,
-    "request time": new Date().getTime().toString(),
-  };
-  let historyArr = [];
-  if (localStorage.getItem("history")) {
-    historyArr = JSON.parse(localStorage.getItem("history"));
-  }
-  historyArr.unshift(state);
-  localStorage.setItem("history", JSON.stringify(historyArr));
-}
-
-function Request({ setResponse , request, setRequest, dropdownLists }) {
+function Request({ setResponse, request, setRequest, dropdownLists }) {
   //Request props
-  const {method,url,queryParams,body,contentType,headers} = request;
-  const {setMethod, setUrl, setQueryParams,setBody,setContentType,setHeaders} = setRequest;
+  const { method, url, queryParams, body, contentType, headers } = request;
+  const {
+    setMethod,
+    setUrl,
+    setQueryParams,
+    setBody,
+    setContentType,
+    setHeaders,
+  } = setRequest;
+  const { api_methods, content_types } = dropdownLists;
 
   //UI states
   const [parameterToggle, setParameterToggle] = useState("parameters");
-
-  const {api_methods, content_types} = dropdownLists;
 
   function handleUrlChange(e) {
     setUrl(e.target.value);
@@ -43,19 +36,28 @@ function Request({ setResponse , request, setRequest, dropdownLists }) {
         requestConfig["responseType"] = "arraybuffer";
         axiosRes = await axios(requestConfig);
       }
-      
-      const res = {data:axiosRes.data, headers:axiosRes.headers, status: axiosRes.status,statusText: axiosRes.statusText};
-      console.log(res);
-      writeHistory(request, res);
+      const res = {
+        data: axiosRes.data,
+        headers: axiosRes.headers,
+        status: axiosRes.status,
+        statusText: axiosRes.statusText,
+      };
+
+      persistHistory(request, res);
       setResponse(res);
     } catch (e) {
-      writeHistory(request, e.response);
-      setResponse(e.response);
+      
+      if (!e.response) {
+        alert("oops, some error occured.");
+      } else {
+        persistHistory(request, e.response);
+        setResponse(e.response);
+      }
     }
   }
 
   return (
-    <div className=" mx-auto w-full  md:m-0 space-y-4 bg-gray-800 rounded-lg px-4 py-2 ">
+    <div className=" mx-auto w-full  md:m-0  bg-gray-800 rounded-md px-4 pb-4 ">
       <div className="flex flex-col  lg:flex-row md:w-full">
         <div className=" w-full lg:w-1/5">
           <Dropdown
@@ -71,13 +73,12 @@ function Request({ setResponse , request, setRequest, dropdownLists }) {
           <div className="flex flex-col lg:flex-row ">
             <input
               type="text"
-              className="font-mono text-sm py-2 px-4 w-full border border-gray-500 bg-gray-900"
+              className=" py-2 px-4 w-full border border-gray-500 bg-gray-900"
               value={url}
               onChange={handleUrlChange}
-              placeholder="eg : https://httpbin.org/get"
             />
             <button
-              className="border w-full px-4 py-2 font-semibold bg-green-200 text-black lg:w-1/5 "
+              className="border w-full px-4 py-2 font-semibold bg-gradient-to-r from-green-400 to-blue-500 text-black lg:w-1/5 "
               onClick={sendRequest}
             >
               send
@@ -85,9 +86,16 @@ function Request({ setResponse , request, setRequest, dropdownLists }) {
           </div>
         </div>
       </div>
-
-      {method !== "get" && (
-        <div className="space-y-4 py-2">
+      <Transition
+        show={method !== "get"}
+        enter="transition-opacity duration-300"
+        enterFrom="opacity-0"
+        enterTo="opacity-100"
+        leave="transition-opacity duration-300"
+        leaveFrom="opacity-100"
+        leaveTo="opacity-0"
+      >
+        <div className="space-y-4">
           <Dropdown
             selectedOption={contentType}
             setSelectedOption={setContentType}
@@ -101,10 +109,10 @@ function Request({ setResponse , request, setRequest, dropdownLists }) {
             name="request body"
           />
         </div>
-      )}
+      </Transition>
 
-      <div className="">
-        <div className="flex space-x-2 pt-2 pb-4 ">
+      <div>
+        <div className="flex space-x-2 pt-4 pb-2 mb-2 ">
           <ButtonTab
             state={parameterToggle}
             value="parameters"
@@ -116,7 +124,7 @@ function Request({ setResponse , request, setRequest, dropdownLists }) {
             updateState={setParameterToggle}
           />
         </div>
-        {parameterToggle === "parameters" && (
+        <Transition show={parameterToggle !== "parameters"}>
           <div>
             <RequestParameters
               params={queryParams}
@@ -125,8 +133,8 @@ function Request({ setResponse , request, setRequest, dropdownLists }) {
               type="parameter"
             />
           </div>
-        )}
-        {parameterToggle === "headers" && (
+        </Transition>
+        <Transition show={parameterToggle !== "headers"}>
           <div>
             <RequestParameters
               params={headers}
@@ -135,7 +143,7 @@ function Request({ setResponse , request, setRequest, dropdownLists }) {
               type="header"
             />
           </div>
-        )}
+        </Transition>
       </div>
     </div>
   );

@@ -25,8 +25,7 @@ function RequestParameters({ params, setParams }) {
 
   return (
     <div className="w-full">
-      {/* <h2 className=" pt-4 pb-2">{name}</h2> */}
-      <div className=" flex flex-col items-center">
+      <div className=" flex flex-col">
         {params.map((param) => (
           <KeyValue
             key={param.id}
@@ -39,7 +38,7 @@ function RequestParameters({ params, setParams }) {
         ))}
       </div>
       <button
-        className="font-semibold bg-gray-700  py-2 px-4 my-2 flex items-center justify-center space-x-1 mx-auto"
+        className="bg-gray-700  rounded  py-2 px-4 my-2 flex items-center justify-center  mx-auto"
         onClick={addParam}
       >
         <PlusIcon className="w-6 h-5" />

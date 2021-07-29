@@ -6,16 +6,16 @@ function Response({ response }) {
   const [responseToggle, setResponseToggle] = useState("data");
   if (!response) {
     return (
-      <div className="mx-auto w-full  md:m-0  bg-gray-800 rounded-lg px-4 py-2 ">
+      <div className="mx-auto w-full  md:m-0  bg-gray-800 rounded-md px-4 pb-4">
         <div className="flex flex-col ">
-          <h2 className=" pb-4 pt-4 font-bold">response</h2>
-          <div className="pb-2   font-semibold ">
+          <h2 className=" pb-2 pt-4 font-semibold">response</h2>
+          <div className="pb-2  ">
             {" "}
-            status : <span className="font-mono  ">no request sent</span>
+            status : <span className=" ">no request sent</span>
           </div>
         </div>
 
-        <div className="w-full h-36 flex justify-center items-center font-mono">
+        <div className="w-full h-36 flex justify-center items-center ">
           nothing here :({" "}
         </div>
       </div>
@@ -42,12 +42,12 @@ function Response({ response }) {
       }
     }
     return (
-      <div className="mx-auto w-full  md:m-0  bg-gray-800 rounded-lg px-4 py-2 ">
+      <div className="mx-auto w-full  md:m-0  bg-gray-800 rounded-md px-4 pb-4 ">
         <div className="flex flex-col">
-          <h2 className=" pb-4 pt-4 font-bold">response</h2>
-          <div className=" pb-2  font-semibold ">
+          <h2 className=" pb-2 pt-4 font-semibold">response</h2>
+          <div className=" pb-2 ">
             {" "}
-            status : <span className="font-mono ">{response.status}</span>
+            status : <span className="">{response.status}</span>
           </div>
         </div>
         <div className="flex space-x-2 pt-1 py-4 ">
@@ -69,7 +69,7 @@ function Response({ response }) {
         </div>
         {responseToggle === "data" && (
           <div className="focus:outline-none">
-            <pre className="overflow-auto bg-gray-900 min-h-72 max-h-screen p-4 rounded-md">
+            <pre className="overflow-auto bg-gray-900 h-96 max-h-screen p-4 rounded-md">
               <code>{display_data}</code>
             </pre>
           </div>
