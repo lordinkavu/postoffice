@@ -5,12 +5,15 @@ function Dropdown({
   setSelectedOption,
   options,
   width,
+  name
   
 }) {
   function updateOption(value) {
     setSelectedOption(value.name);
   }
   return (
+    <div>
+      <h2 className="pb-2 pt-4  font-semibold">{name}</h2>
     <Listbox value={selectedOption} onChange={updateOption}>
       <div className={`${width}  relative bg-gray-900 font-mono`}>
         <Listbox.Button className=" pr-2 pl-4 py-2 border border-gray-500 flex items-center justify-between w-full">
@@ -39,6 +42,7 @@ function Dropdown({
         </Listbox.Options>
       </div>
     </Listbox>
+    </div>
   );
 }
 
