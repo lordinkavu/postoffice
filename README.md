@@ -10,10 +10,10 @@ Working with 3rd party APIs can often be clunky. You know it, we know it. **post
 
  Feature | Description
 ------- | -----------
-🚀 **Make API requests** | make an API request to a 3rd party API from the UI. Common HTTP methods supported. The requests also supports sending HTTP headers and data in various formats if needed
-💻 **View API response** | view the formatted response
-🔍 **History** | view and restore previous requests/responses
-💾 **Persistence** | user data is persisted locally
+🚀 **Make API requests** | Make an API request to a 3rd party API from the UI. Common HTTP methods supported. The requests also supports sending HTTP headers and data in various formats if needed.
+💻 **View API response** | View the formatted response.
+🔍 **History** | View and restore previous requests/responses.
+💾 **Persistence** | User data is persisted locally
 
 
 UI layout inspired from [hoppscotch](https://github.com/hoppscotch/hoppscotch)
@@ -34,6 +34,7 @@ UI layout inspired from [hoppscotch](https://github.com/hoppscotch/hoppscotch)
 - test coverage 
 - better response type classification and formatting
 - better response metadata
+- _html_ preview
 - include more _HTTP_ methods
 - make requests with custom _cURL_ commands
 - UI improvements with customisation features
