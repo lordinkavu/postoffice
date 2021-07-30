@@ -1,6 +1,7 @@
 ## **postoffice**  ⚡ 
 
-🔗 [link](https://postoffice-api.netlify.app/)  
+🔗 [link](https://postoffice-api.netlify.app/) 
+<br/></br>
  [![Netlify Status](https://api.netlify.com/api/v1/badges/3c425796-80aa-4dd5-9bb7-2bddc04bb0dd/deploy-status)](https://app.netlify.com/sites/postoffice-api/deploys)
 
 Working with 3rd party APIs can often be clunky. You know it, we know it. **postoffice** is a lightweight API playground that helps you interact with 3rd party APIs easily.
@@ -9,13 +10,13 @@ Working with 3rd party APIs can often be clunky. You know it, we know it. **post
 
  Feature | Description
 ------- | -----------
-🚀 **Make API requests** | make an API request to a 3rd party API from the UI. Common HTTP methods supported. The requests also supports sending HTTP headers and data in various formats if needed.
-💻 **View API response** | view the formatted response. 
-🔍 **History** | view and restore previos requests/responses.
-💾 **Persistence** | user data is persisted locally.
+🚀 **Make API requests** | make an API request to a 3rd party API from the UI. Common HTTP methods supported. The requests also supports sending HTTP headers and data in various formats if needed
+💻 **View API response** | view the formatted response
+🔍 **History** | view and restore previous requests/responses
+💾 **Persistence** | user data is persisted locally
 
 
- 
+UI layout inspired from [hoppscotch](https://github.com/hoppscotch/hoppscotch)
 
 ![screenshot](./assets/ss.png "postoffice")
 ![screenshot](./assets/ss_mob.png "postoffice")
