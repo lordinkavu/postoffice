@@ -129,7 +129,7 @@ function Request({ setResponse, request, setRequest, dropdownLists }) {
             updateState={setParameterToggle}
           />
         </div>
-        <Transition show={parameterToggle !== "parameters"}>
+        <Transition show={parameterToggle === "parameters"}>
           <div>
             <RequestParameters
               params={queryParams}
@@ -139,7 +139,7 @@ function Request({ setResponse, request, setRequest, dropdownLists }) {
             />
           </div>
         </Transition>
-        <Transition show={parameterToggle !== "headers"}>
+        <Transition show={parameterToggle === "headers"}>
           <div>
             <RequestParameters
               params={headers}
