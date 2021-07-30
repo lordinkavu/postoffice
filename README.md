@@ -9,7 +9,14 @@ Working with 3rd party APIs can often be clunky. You know it, we know it. Postof
 🔍 **History** | go to the history view and look at the old requests (and their responses).
 💾 **Persistence** | user data is persisted locally.
 
+
+ 
+
 ![screenshot](./assets/ss.png "postoffice")
+![screenshot](./assets/ss_mob.png "postoffice")
+
+
+
 
 ### **Stack**
  - _reactJS_
