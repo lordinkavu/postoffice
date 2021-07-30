@@ -1,3 +1,4 @@
+import React from "react";
 import { Listbox} from "@headlessui/react";
 import { SelectorIcon } from "@heroicons/react/solid";
 
@@ -9,8 +10,8 @@ function Dropdown({ selectedOption, setSelectedOption, options, width, name }) {
     <div>
       <h2 className="pb-2 pt-4  font-semibold">{name}</h2>
       <Listbox value={selectedOption} onChange={updateOption}>
-        <div className={`${width}  relative bg-gray-900 `}>
-          <Listbox.Button className=" pr-2 pl-4 py-2 border  border-gray-500 flex items-center justify-between w-full">
+        <div className={`${width} rounded relative bg-gray-900 `}>
+          <Listbox.Button className=" pr-2 pl-4 py-2  rounded  flex items-center justify-between w-full">
             <span className="  truncate pr-2 text-gray-300">
               {selectedOption}
             </span>
@@ -22,7 +23,7 @@ function Dropdown({ selectedOption, setSelectedOption, options, width, name }) {
             </span>{" "}
           </Listbox.Button>
           <Listbox.Options
-            className={`z-50  py-2 w-full  overflow-auto max-h-72 absolute  bg-gray-900  text-gray-300`}
+            className={`z-50  py-2 w-full rounded overflow-auto max-h-72 absolute  bg-gray-900  text-gray-300`}
           >
             {options.map((option) => (
               <Listbox.Option

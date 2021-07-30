@@ -1,4 +1,14 @@
-import { useState } from "react";
+/* 
+   body component manages the request and response states. 
+   state updation by user happens in request component. 
+   state is also pushed into localStorage array for persistence.
+   this also triggers re rendering of history component.
+   history component fetches the history objects from localStorage and displays it.
+   the states can be updated from inside history component
+   this enables us to move back to previos request-response states 
+*/
+
+import React, { useState } from "react";
 import Response from "./Response";
 import Request from "./Request";
 import History from "./History";
@@ -46,7 +56,7 @@ function Body() {
   };
 
   return (
-    <section className=" text-gray-300 flex flex-col space-y-4 lg:flex-row lg:justify-between relative lg:space-x-4 lg:space-y-0">
+    <section className=" text-gray-300 font-mono min-h-screen flex flex-col space-y-4 lg:flex-row lg:justify-between relative lg:space-x-4 lg:space-y-0">
       <div className=" flex flex-col space-y-4 w-full lg:w-8/12">
         <Request
           setResponse={setResponse}

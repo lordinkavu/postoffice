@@ -1,3 +1,4 @@
+import React from "react";
 import { nanoid } from "nanoid";
 import KeyValue from "./KeyValue";
 import { PlusIcon } from "@heroicons/react/solid";

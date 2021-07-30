@@ -1,6 +1,12 @@
-import { useState } from "react";
+/* 
+   currently classfies response categories into 3.
+   needs a more detailed response classification and handling.
+*/
+
+
+import React, {useState} from "react";
 import ButtonTab from "./ButtonTab";
-import generateSrc from "../helpers/img_src_generator";
+import generateSrc from "../helpers/generateSrc";
 
 function Response({ response }) {
   const [responseToggle, setResponseToggle] = useState("data");

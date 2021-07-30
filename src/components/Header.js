@@ -1,5 +1,7 @@
 import { ReactComponent as GithubSVG } from "../assets/github.svg";
 import { ReactComponent as LogoSVG } from "../assets/send.svg";
+import React from "react";
+
 function Header() {
   return (
     <header className="mb-8 flex justify-between items-center ">
