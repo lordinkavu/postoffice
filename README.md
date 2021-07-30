@@ -1,6 +1,6 @@
 ## **postoffice**  ⚡
 
-Working with 3rd party APIs can often be clunky. You know it, we know it. Postoffice helps you interact with 3rd party APIs easily. 
+Working with 3rd party APIs can often be clunky. You know it, we know it. **postoffice** is a lightweight API playground that helps you interact with 3rd party APIs easily. 
 
  Feature | Description
 ------- | -----------
