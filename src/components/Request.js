@@ -32,7 +32,7 @@ function Request({ setResponse, request, setRequest, dropdownLists }) {
     const requestConfig = generateAxiosConfig(request);
     try {
       let axiosRes = await axios(requestConfig);
-
+   
       // Hack for rendering image response
       // generating image from unicode response failed. So requesting binary response instead.
       if (axiosRes["headers"]["content-type"].substr(0, 2) === "im") {
@@ -45,6 +45,7 @@ function Request({ setResponse, request, setRequest, dropdownLists }) {
         status: axiosRes.status,
         statusText: axiosRes.statusText,
       };
+    
       
       persistHistory(request, res);
       setResponse(res);

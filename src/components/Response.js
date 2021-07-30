@@ -81,9 +81,9 @@ function Response({ response }) {
           </div>
         )}
         {
-          responseToggle === "meta" && (
+          responseToggle === "meta" &&  (
             <div className="bg-gray-900 p-4 rounded-md h-96 overflow-auto" >
-              <h3>status text : <span className="font-mono">{response.statusText}</span></h3>
+              {response.statusText!=="" && <h3>status text : <span className="font-mono">{response.statusText}</span></h3>}
             </div>
           )
         }
